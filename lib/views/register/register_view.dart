@@ -8,22 +8,26 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     
-    // Pobieramy kolor fioletowy przypominający kropkę z Twojego logo
-    const Color dotColor = Color(0xFFBB7CE8);
+    // Kolory z Twojego logo
+    const Color dotColor = Color(0xFFBB7CE8); // Jasny fioletowy (kropki/tekst guzika)
+    const Color phoneColor = Color(0xFF451A9A); // Ciemny fioletowy (środek telefonu/obramówki)
 
     return Scaffold(
       appBar: AppBar(title: const Text('Sign Up')),
       body: Stack(
         children: [
-          // Logo przypięte sztywno u góry
+          // Logo przypięte sztywno u góry z animacją Hero
           Positioned(
             top: screenHeight * 0.05,
             left: 0,
             right: 0,
-            child: Image.asset(
-              'assets/logo.png',
-              height: screenHeight * 0.16,
-              fit: BoxFit.contain,
+            child: Hero(
+              tag: 'app_logo',
+              child: Image.asset(
+                'assets/logo.png',
+                height: screenHeight * 0.16,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           
@@ -32,26 +36,39 @@ class RegisterView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: Column(
-                mainAxisSize: MainAxisSize.min, // Kurczy kolumnę do wielkości dzieci, by Center mogło ją wyśrodkować
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Pole do wpisania Emaila
-                  const TextField(
+                  // Pole do wpisania Emaila - z wyszarzonym podpowiadaczem
+                  TextField(
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
+                      hintText: 'email@test.com', // Wyszarzony przykład dla użytkownika
+                      labelStyle: const TextStyle(color: phoneColor),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: phoneColor),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: phoneColor, width: 2.0),
+                      ),
+                      prefixIcon: const Icon(Icons.email, color: phoneColor),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16),
                   
                   // Pole do wpisania Hasła
-                  const TextField(
+                  TextField(
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.lock),
+                      labelStyle: const TextStyle(color: phoneColor),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: phoneColor),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: phoneColor, width: 2.0),
+                      ),
+                      prefixIcon: const Icon(Icons.lock, color: phoneColor),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -66,7 +83,6 @@ class RegisterView extends StatelessWidget {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () {
-                        // Tutaj w przyszłości dodamy logikę rejestracji
                         print("Próba rejestracji...");
                       },
                       child: const Text('Sign Up', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -78,7 +94,7 @@ class RegisterView extends StatelessWidget {
                   // Przycisk tekstowy do powrotu do logowania
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context); // Wraca na poprzedni ekran
+                      Navigator.pop(context);
                     },
                     style: TextButton.styleFrom(foregroundColor: dotColor),
                     child: const Text('Already have an account? Login'),
