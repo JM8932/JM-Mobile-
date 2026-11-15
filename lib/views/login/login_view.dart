@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../register/register_view.dart';
-import '../home/home_view.dart'; // Importujemy nowy widok ekranu głównego
+import '../home/home_view.dart'; 
 
-// Zmieniamy LoginView na StatefulWidget, ponieważ teraz nasz ekran 
-// musi reagować na wpisywany tekst i zmieniać swój STAN (wyświetlać błędy).
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -12,24 +11,20 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  // Kontrolery służą do odczytywania tego, co użytkownik wpisał w pola tekstowe
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Zmienne przechowujące komunikaty o błędach (jeśli null - błędu nie ma)
   String? _emailError;
   String? _passwordError;
 
-  // Przykładowe (testowe) dane logowania wymagane w zadaniu
   final String _mockEmail = 'email@test.com';
   final String _mockPassword = 'password123';
 
-  // Funkcja wywoływana po kliknięciu przycisku Login
-  void _attemptLogin() {
+  // Funkcja logowania musi być teraz 'async', bo zapisywanie na dysku telefonu chwilę trwa
+  Future<void> _attemptLogin() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
-    // Najpierw resetujemy błędy przed każdą nową próbą
     setState(() {
       _emailError = null;
       _passwordError = null;
@@ -37,7 +32,6 @@ class _LoginViewState extends State<LoginView> {
 
     bool isValid = true;
 
-    // Walidacja e-maila: sprawdzamy czy ma '@' oraz czy zgadza się z naszym testowym
     if (!email.contains('@') || email != _mockEmail) {
       setState(() {
         _emailError = 'Invalid email';
@@ -45,7 +39,6 @@ class _LoginViewState extends State<LoginView> {
       isValid = false;
     }
 
-    // Walidacja hasła: sprawdzamy czy zgadza się z testowym
     if (password != _mockPassword) {
       setState(() {
         _passwordError = 'Invalid password';
@@ -53,16 +46,26 @@ class _LoginViewState extends State<LoginView> {
       isValid = false;
     }
 
-    // Jeśli wszystko się zgadza
     if (isValid) {
       print("Zalogowano pomyślnie jako $_mockEmail!");
+
+      // ----- NOWOŚĆ: Zapis do SharedPreferences -----
+      // Otwieramy "notes" telefonu i zapisujemy, że użytkownik zalogował się poprawnie
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      // ----------------------------------------------
       
-      // Czyszczenie pól po poprawnym zalogowaniu, by po wylogowaniu ekran był pusty
       _emailController.clear();
       _passwordController.clear();
 
-      // Przejście do głównego ekranu aplikacji (HomeView) z animacją
-      Navigator.push(
+      // Zabezpieczenie Fluttera - upewniamy się, że po odczekaniu na zapis dyskowy 
+      // nasz ekran logowania nadal jest otwarty i możemy nawigować.
+      if (!context.mounted) return;
+
+      // Zamieniamy obecny ekran (LoginView) na nowy (HomeView) - pushReplacement!
+      // Dzięki temu użytkownik klikając w telefonie sprzętowy przycisk "Wstecz" 
+      // nie wróci do ekranu logowania (bo ten został wykasowany ze stosu).
+      Navigator.pushReplacement(
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => const HomeView(),
@@ -75,7 +78,6 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  // Ważne: Zwalniamy pamięć po kontrolerach, gdy ekran jest zamykany
   @override
   void dispose() {
     _emailController.dispose();
@@ -87,8 +89,8 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     
-    const Color dotColor = Color(0xFFBB7CE8);
-    const Color phoneColor = Color(0xFF451A9A);
+    const Color dotColor = Color(0xFFBB7CE8); 
+    const Color phoneColor = Color(0xFF451A9A); 
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -114,13 +116,12 @@ class _LoginViewState extends State<LoginView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // --- POLE EMAIL ---
                   TextField(
-                    controller: _emailController, // Podpinamy kontroler
+                    controller: _emailController, 
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      hintText: 'email@test.com',
-                      errorText: _emailError, // Automatycznie wyświetla czerwony tekst błędu pod polem!
+                      hintText: 'email@test.com', 
+                      errorText: _emailError, 
                       labelStyle: const TextStyle(color: phoneColor),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: phoneColor),
@@ -128,7 +129,6 @@ class _LoginViewState extends State<LoginView> {
                       focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: phoneColor, width: 2.0),
                       ),
-                      // Dodajemy też obramówkę dla stanu błędu, żeby była czerwona
                       errorBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
@@ -141,13 +141,12 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   const SizedBox(height: 16),
                   
-                  // --- POLE HASŁO ---
                   TextField(
-                    controller: _passwordController, // Podpinamy kontroler
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      errorText: _passwordError, // Wyświetlanie błędu hasła
+                      errorText: _passwordError, 
                       labelStyle: const TextStyle(color: phoneColor),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: phoneColor),
@@ -166,7 +165,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   const SizedBox(height: 24),
                   
-                  // --- PRZYCISK LOGOWANIA ---
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -175,7 +173,7 @@ class _LoginViewState extends State<LoginView> {
                         backgroundColor: dotColor,
                         foregroundColor: Colors.white,
                       ),
-                      onPressed: _attemptLogin, // Podpinamy naszą funkcję walidującą
+                      onPressed: _attemptLogin, 
                       child: const Text('Login', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -184,11 +182,9 @@ class _LoginViewState extends State<LoginView> {
                   
                   TextButton(
                     onPressed: () {
-                      // Przejście na ekran rejestracji też zdejmujemy błędy, by ekran był czysty po powrocie
                       setState(() {
                         _emailError = null;
                         _passwordError = null;
-                        // Czyścimy też pola z błędnymi danymi
                         _emailController.clear();
                         _passwordController.clear();
                       });
