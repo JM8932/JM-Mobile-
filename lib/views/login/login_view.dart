@@ -1,10 +1,10 @@
+import 'package:dsw60352test/views/home/home_view.dart';
+import 'package:dsw60352test/views/register/register_view.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../register/register_view.dart';
-import '../home/home_view.dart'; 
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+  const new({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -30,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
       _passwordError = null;
     });
 
-    bool isValid = true;
+    var isValid = true;
 
     if (!email.contains('@') || email != _mockEmail) {
       setState(() {
@@ -47,7 +47,7 @@ class _LoginViewState extends State<LoginView> {
     }
 
     if (isValid) {
-      print("Zalogowano pomyślnie jako $_mockEmail!");
+      print('Zalogowano pomyślnie jako $_mockEmail!');
 
       // ----- NOWOŚĆ: Zapis do SharedPreferences -----
       // Otwieramy "notes" telefonu i zapisujemy, że użytkownik zalogował się poprawnie
@@ -89,8 +89,8 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     
-    const Color dotColor = Color(0xFFBB7CE8); 
-    const Color phoneColor = Color(0xFF451A9A); 
+    const dotColor = Color(0xFFBB7CE8); 
+    const phoneColor = Color(0xFF451A9A); 
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -112,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
           
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -127,13 +127,13 @@ class _LoginViewState extends State<LoginView> {
                         borderSide: BorderSide(color: phoneColor),
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: phoneColor, width: 2.0),
+                        borderSide: BorderSide(color: phoneColor, width: 2),
                       ),
                       errorBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
                       focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 2.0),
+                        borderSide: BorderSide(color: Colors.red, width: 2),
                       ),
                       prefixIcon: const Icon(Icons.email, color: phoneColor),
                     ),
@@ -152,13 +152,13 @@ class _LoginViewState extends State<LoginView> {
                         borderSide: BorderSide(color: phoneColor),
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: phoneColor, width: 2.0),
+                        borderSide: BorderSide(color: phoneColor, width: 2),
                       ),
                       errorBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
                       focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 2.0),
+                        borderSide: BorderSide(color: Colors.red, width: 2),
                       ),
                       prefixIcon: const Icon(Icons.lock, color: phoneColor),
                     ),
@@ -201,7 +201,7 @@ class _LoginViewState extends State<LoginView> {
                       );
                     },
                     style: TextButton.styleFrom(foregroundColor: dotColor),
-                    child: const Text('Don\'t have an account? Sign Up'),
+                    child: const Text("Don't have an account? Sign Up"),
                   ),
                 ],
               ),

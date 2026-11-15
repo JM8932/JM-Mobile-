@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Klasa RegisterView odpowiada za ekran zakładania nowego konta.
 class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +10,8 @@ class RegisterView extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     
     // Paleta kolorów
-    const Color dotColor = Color(0xFFBB7CE8); // Jasny fiolet
-    const Color phoneColor = Color(0xFF451A9A); // Ciemny fiolet
+    const dotColor = Color(0xFFBB7CE8); // Jasny fiolet
+    const phoneColor = Color(0xFF451A9A); // Ciemny fiolet
 
     return Scaffold(
       appBar: AppBar(title: const Text('Sign Up')),
@@ -38,7 +38,7 @@ class RegisterView extends StatelessWidget {
             // Dzięki temu, gdy dodamy więcej pól i otworzy się klawiatura, ekran nie wyrzuci błędu "Overflow", tylko pozwoli się przewijać.
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -46,18 +46,18 @@ class RegisterView extends StatelessWidget {
                     SizedBox(height: screenHeight * 0.18),
 
                     // --- POLE IMIĘ I NAZWISKO (FULL NAME) ---
-                    TextField(
+                    const TextField(
                       decoration: InputDecoration(
                         labelText: 'Full name',
                         hintText: 'John Doe', // Przykładowe imię
-                        labelStyle: const TextStyle(color: phoneColor),
-                        enabledBorder: const OutlineInputBorder(
+                        labelStyle: TextStyle(color: phoneColor),
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: phoneColor),
                         ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: phoneColor, width: 2.0),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: phoneColor, width: 2),
                         ),
-                        prefixIcon: const Icon(Icons.person, color: phoneColor), // Ikonka osoby
+                        prefixIcon: Icon(Icons.person, color: phoneColor), // Ikonka osoby
                       ),
                       keyboardType: TextInputType.name, // Podpowiada klawiaturę z dużymi literami
                     ),
@@ -65,18 +65,18 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     // --- POLE EMAIL ---
-                    TextField(
+                    const TextField(
                       decoration: InputDecoration(
                         labelText: 'Email', 
                         hintText: 'email@test.com', 
-                        labelStyle: const TextStyle(color: phoneColor),
-                        enabledBorder: const OutlineInputBorder(
+                        labelStyle: TextStyle(color: phoneColor),
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: phoneColor), 
                         ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: phoneColor, width: 2.0), 
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: phoneColor, width: 2), 
                         ),
-                        prefixIcon: const Icon(Icons.email, color: phoneColor),
+                        prefixIcon: Icon(Icons.email, color: phoneColor),
                       ),
                       keyboardType: TextInputType.emailAddress, 
                     ),
@@ -84,36 +84,36 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 16),
                     
                     // --- POLE HASŁO ---
-                    TextField(
+                    const TextField(
                       obscureText: true, 
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        labelStyle: const TextStyle(color: phoneColor),
-                        enabledBorder: const OutlineInputBorder(
+                        labelStyle: TextStyle(color: phoneColor),
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: phoneColor),
                         ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: phoneColor, width: 2.0),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: phoneColor, width: 2),
                         ),
-                        prefixIcon: const Icon(Icons.lock, color: phoneColor),
+                        prefixIcon: Icon(Icons.lock, color: phoneColor),
                       ),
                     ),
                     
                     const SizedBox(height: 16),
 
                     // --- POLE POTWIERDŹ HASŁO (CONFIRM PASSWORD) ---
-                    TextField(
+                    const TextField(
                       obscureText: true, // Ukrywa wpisywane hasło (kropki)
                       decoration: InputDecoration(
                         labelText: 'Confirm password',
-                        labelStyle: const TextStyle(color: phoneColor),
-                        enabledBorder: const OutlineInputBorder(
+                        labelStyle: TextStyle(color: phoneColor),
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: phoneColor),
                         ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: phoneColor, width: 2.0),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: phoneColor, width: 2),
                         ),
-                        prefixIcon: const Icon(Icons.lock_outline, color: phoneColor), // Zmieniona ikonka kłódki na "obrys" dla odróżnienia
+                        prefixIcon: Icon(Icons.lock_outline, color: phoneColor), // Zmieniona ikonka kłódki na "obrys" dla odróżnienia
                       ),
                     ),
                     
@@ -129,7 +129,7 @@ class RegisterView extends StatelessWidget {
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          print("Próba rejestracji...");
+                          print('Próba rejestracji...');
                         },
                         child: const Text('Sign Up', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       ),

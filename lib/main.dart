@@ -1,7 +1,7 @@
+import 'package:dsw60352test/views/home/home_view.dart';
+import 'package:dsw60352test/views/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'views/login/login_view.dart';
-import 'views/home/home_view.dart';
 
 // Zmieniamy funkcję main na 'async', ponieważ musimy poczekać 
 // na odczyt z pamięci telefonu PRZED uruchomieniem aplikacji.
@@ -15,7 +15,7 @@ void main() async {
   
   // Odczytujemy zapisaną wcześniej flagę 'isLoggedIn'. 
   // Jeżeli zmiennej tam nie ma (bo aplikacja jest świeża), to domyślnie przyjmujemy false (niezalogowany).
-  final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
   // Przekazujemy odczytany stan logowania bezpośrednio do naszej aplikacji
   runApp(MyApp(isLoggedIn: isLoggedIn));
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   // Przechowujemy informację czy użytkownik był wcześniej zalogowany
   final bool isLoggedIn;
 
-  const MyApp({super.key, required this.isLoggedIn});
+  const new({required this.isLoggedIn, super.key});
 
   @override
   Widget build(BuildContext context) {
